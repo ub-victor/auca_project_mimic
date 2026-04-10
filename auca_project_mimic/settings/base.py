@@ -18,7 +18,10 @@ def get_database_config():
     db_url = config('DATABASE_URL', default=None)
     if db_url:
         import dj_database_url
-        return dj_database_url.parse(db_url)
+        try:
+            return dj_database_url.parse(db_url)
+        except dj_database_url.ParseError:
+            pass  # Fall back to SQLite if URL is invalid
 
     # Fallback (SQLite for local development)
     return {
@@ -43,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
     'apps.accounts',
     'apps.core',
     'apps.courses',

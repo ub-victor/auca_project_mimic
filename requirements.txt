@@ -2,4 +2,5 @@ Django==6.0.3
 python-decouple
 dj-database-url
 django-cloudinary-storage
+cloudinary
 psycopg2-binary
