@@ -41,7 +41,7 @@ We will use GitHub Flow with a develop branch as integration point.
 -   Any notes for reviewers
 -   When you PR conflit fix the error or get in touch with the branch it conflits with so you can resolve the error
 
-Team lead reviews and merges PRs (resolve conflicts if any).
+Team lead reviews and merges PRs.
 
 ------------------------------------------------------------------------
 
