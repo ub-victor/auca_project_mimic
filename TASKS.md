@@ -268,14 +268,14 @@ Complete assessment flow with AI evaluation; lecturer can see AI suggestions and
 
 # Timeline (Everyday work on this Project like is the deadline is tomorrow)
 
-  Week   Focus                          Members
-  ------ ------------------------------ ----------------------
-  1      Setup, models, base template   All
-  2      Auth & profiles                Debora, Student A
-  3      Courses, dashboard             Student B, Student A
-  4      Assessments & ML               Student C
-  5      Finances & grades              Valentin
-  6      Testing & deployment           All
+  Priority   Focus                          
+  ------     ------------------------------ 
+  1          Setup, models, base template   
+  2          Auth & profiles                
+  3          Courses, dashboard             
+  4          Assessments & ML               
+  5          Finances & grades              
+  6          Testing & deployment        
 
 ------------------------------------------------------------------------
 
