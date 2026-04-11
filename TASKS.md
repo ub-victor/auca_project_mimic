@@ -232,9 +232,10 @@ Working course system with enrollment and timetable.
 
 ### Tasks:
 
--   Assignment creation
--   Submission interface
--   ML evaluation integration
+-   **Assignment Creation:** Build form for lecturer to add assignment with multiple questions. Use inline formsets for questions.
+-   **Submission:** Student can view assignments, submit answers via textarea or file (file upload to Cloudinary). Use Submission model.
+-   **ML evaluation integration**
+    
 -   Lecturer grading interface
 -   Final grading storage
 
