@@ -235,10 +235,12 @@ Working course system with enrollment and timetable.
 -   **Assignment Creation:** Build form for lecturer to add assignment with multiple questions. Use inline formsets for questions.
 -   **Submission:** Student can view assignments, submit answers via textarea or file (file upload to Cloudinary). Use Submission model.
 -   **ML evaluation integration**
-    
--   Lecturer grading interface
--   Final grading storage
-
+    - Install sentence-transformers.
+    - Create ai_evaluator.py with AnswerEvaluator class (as per plan).
+    - In submission view, after saving, call evaluator and store ai_score, similarity_score, ai_feedback.
+    - (Note: Loading the model per request is slow; consider loading once in app config or using a singleton.)
+-   **Grading Interface:** For lecturers, display submission details, AI suggestion, and a form to input final grade and feedback.
+-   **Testing:** Test with sample answers; adjust similarity threshold mapping.
 ### Methodology:
 
 -   Use formsets for questions
