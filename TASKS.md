@@ -147,7 +147,7 @@ access.
 
 ------------------------------------------------------------------------
 
-## 🔹 Member 3: Valentin -- Database Models & Core Structure
+## 🔹 Team 2: (+250 788 426 996 ~Hirwa Roy 24174/ +250 791 761 076 ~26454_clement ) -- Database Models & Core Structure
 
 **Branch:** `feature/models-valentin`
 
