@@ -146,7 +146,7 @@ access.
 
 ### Deliverable PR:
 
-All models, migrations, admin working with sample data.
+All models defined, migrations applied, admin interface functional with sample data.
 
 ------------------------------------------------------------------------
 
