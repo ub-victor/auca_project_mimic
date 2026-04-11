@@ -200,7 +200,7 @@ Refactored templates with clean, responsive design; dashboard shows real data; n
 
 ### Deliverable PR:
 
-Working course system with enrollment and timetable.
+Functional course browsing, enrollment, and timetable display.
 
 ------------------------------------------------------------------------
 
