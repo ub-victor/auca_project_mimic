@@ -313,4 +313,4 @@ Describe manual tests performed.
 
 # Final Notes
 - We will use our WhatsApp group for Updates and communication
-**Love y'all, lets do this with all our heart**
+**Love y'all guys, lets do this with all our heart**
