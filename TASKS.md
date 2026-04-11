@@ -50,7 +50,7 @@ Team lead(i) reviews and merges PRs(some time someone else can do it, we're lead
   -----------------------------------------------------------------------
   Member         Team               Primary Focus
   -------------- ----------------------------- --------------------------
-  Victoire       Team0                     Architecture, code
+  Victoire       Team 0                     Architecture, code
   (Lead)                                       reviews, deployment,
                                                integration
 
@@ -86,7 +86,7 @@ Team lead(i) reviews and merges PRs(some time someone else can do it, we're lead
 
 # Detailed Task Assignments
 
-## 🔹 Member 1: Victoire (Team Lead)
+## 🔹 Team 0: Victoire (Team Lead)
 
 **Branch:** `feature/setup-victoire(merged and deleted)`
 
