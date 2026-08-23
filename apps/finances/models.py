@@ -1,3 +1,40 @@
 from django.db import models
+from django.conf import settings
 
-# Create your models here.
+
+class Fee(models.Model):
+    FEE_TYPES = [
+        ('tuition',      'Tuition Fee'),
+        ('registration', 'Registration Fee'),
+        ('library',      'Library Fee'),
+        ('ict',          'ICT Fee'),
+        ('other',        'Other'),
+    ]
+
+    student     = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='fees')
+    fee_type    = models.CharField(max_length=20, choices=FEE_TYPES)
+    description = models.CharField(max_length=200, blank=True, help_text='e.g. course name for tuition fees')
+    amount      = models.DecimalField(max_digits=10, decimal_places=2)
+    due_date    = models.DateField()
+    is_paid     = models.BooleanField(default=False)
+    paid_at     = models.DateTimeField(null=True, blank=True)
+    semester    = models.ForeignKey('core.Semester', on_delete=models.CASCADE, related_name='fees')
+
+    def display_name(self):
+        if self.description:
+            return f"{self.get_fee_type_display()} — {self.description}"
+        return self.get_fee_type_display()
+
+    def __str__(self):
+        return f"{self.student} - {self.display_name()} - {self.amount}"
+
+
+class Payment(models.Model):
+    student      = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='payments')
+    amount       = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_date = models.DateTimeField(auto_now_add=True)
+    reference    = models.CharField(max_length=100, unique=True)
+    fees         = models.ManyToManyField(Fee, related_name='payments')
+
+    def __str__(self):
+        return f"{self.student} - {self.amount} - {self.reference}"

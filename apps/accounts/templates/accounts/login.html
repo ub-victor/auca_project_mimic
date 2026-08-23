@@ -6,7 +6,6 @@
     <title>AUCA Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="https://res.cloudinary.com/dhqrnqcwa/image/upload/v1775858111/static/img/static/img/favicon.png" type="image/png">
-
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
@@ -16,7 +15,7 @@
     <!-- LEFT SIDE -->
     <div class="left-side">
 
-        <img class="logo" src="{% static 'img/10001.png' %}" alt="AUCA Logo">
+        <img class="logo" src="https://res.cloudinary.com/dhqrnqcwa/image/upload/v1775858111/static/img/static/img/10001.png" alt="AUCA Logo">
 
         <form method="POST">
             {% csrf_token %}
@@ -24,17 +23,32 @@
             <h3 class="log">Login</h3>
             <p class="welcome">Welcome! Please enter your details.</p>
 
-            {% if error %}
-            <p style="color:red; text-align:center; margin-bottom:10px;">{{ error }}</p>
+            {% if messages %}
+                {% for message in messages %}
+                    <p style="color:{% if message.tags == 'error' %}#c0392b{% else %}#2a9d8f{% endif %};text-align:center;margin-bottom:10px;">{{ message }}</p>
+                {% endfor %}
             {% endif %}
 
-            <label for="email">Enter your Email or ID</label>
-            <input id="email" name="email" class="carre" type="text"
-                   placeholder="Enter your Email or ID" required>
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <p style="color:#c0392b;text-align:center;margin-bottom:10px;">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
 
-            <label for="password">Password</label>
-            <input id="password" name="password" class="carre" type="password"
+            <label for="id_email">Enter your Email or ID</label>
+            <input id="id_email" name="email" class="carre" type="email"
+                   placeholder="Enter your Email or ID"
+                   value="{{ form.email.value|default:'' }}" required>
+            {% for error in form.email.errors %}
+                <p style="color:#c0392b;margin:4px 0;">{{ error }}</p>
+            {% endfor %}
+
+            <label for="id_password">Password</label>
+            <input id="id_password" name="password" class="carre" type="password"
                    placeholder="Type your Password" required>
+            {% for error in form.password.errors %}
+                <p style="color:#c0392b;margin:4px 0;">{{ error }}</p>
+            {% endfor %}
 
             <a href="{% url 'forgot_password' %}" class="forgot-password">Forgot Password?</a>
 
@@ -58,7 +72,7 @@
 
     <!-- RIGHT SIDE -->
     <div class="right-side">
-        <img src="{% static 'img/10002.jpg' %}" alt="Campus Photo">
+        <img src="https://res.cloudinary.com/dhqrnqcwa/image/upload/v1775858111/static/img/static/img/10002.jpg" alt="Campus Photo">
     </div>
 
 </div>

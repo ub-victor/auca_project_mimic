@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Evaluator — AUCA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --navy:#2d4d68; --dark:#0f1f2e; --teal:#2a9d8f; --bg:#eef1f5; --white:#fff; --border:#e4e8ed; --muted:#7a8a99; --green:#2e7d32; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: #1a2a3a; }
+        .navbar { background: var(--dark); height: 62px; padding: 0 36px; display: flex; align-items: center; justify-content: space-between; }
+        .navbar a { color: white; text-decoration: none; font-size: 14px; }
+        .navbar-brand { font-weight: 700; font-size: 16px; letter-spacing: 1px; text-transform: uppercase; }
+        .main { max-width: 760px; margin: 40px auto; padding: 0 24px; }
+        h1 { font-size: 22px; margin-bottom: 6px; }
+        .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+        .card { background: var(--white); border-radius: 12px; padding: 28px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+        label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 5px; margin-top: 16px; }
+        textarea { width: 100%; border: 1px solid #ccc; border-radius: 6px; padding: 10px; font-size: 13px; font-family: inherit; min-height: 110px; }
+        textarea:focus { outline: none; border-color: var(--teal); }
+        .btn { padding: 11px 28px; border-radius: 7px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; color: white; background: var(--teal); margin-top: 18px; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        #result { margin-top: 24px; display: none; }
+        .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 16px; }
+        .result-box { background: #f0faf8; border: 1px solid #b2dfdb; border-radius: 8px; padding: 14px; text-align: center; }
+        .result-box .val { font-size: 26px; font-weight: 800; color: var(--teal); }
+        .result-box .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
+        .feedback-box { background: #f9fafb; border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-size: 13px; color: #444; }
+        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <a class="navbar-brand" href="{% url 'dashboard' %}">AUCA Portal</a>
+    <a href="{% url 'assessments:assignment_list' %}">Assignments</a>
+</nav>
+<main class="main">
+    <h1>AI Answer Evaluator</h1>
+    <p class="subtitle">Paste a student answer and the model answer to get an instant AI evaluation.</p>
+
+    <div class="card">
+        <label>Model Answer (ideal answer)</label>
+        <textarea id="model_answer" placeholder="Enter the expected/ideal answer..."></textarea>
+
+        <label>Student Answer</label>
+        <textarea id="student_answer" placeholder="Enter the student's answer..."></textarea>
+
+        <button class="btn" id="evalBtn" onclick="runEval()">Evaluate</button>
+    </div>
+
+    <div id="result">
+        <div class="result-grid">
+            <div class="result-box">
+                <div class="val" id="res-score">—</div>
+                <div class="lbl">AI Score</div>
+            </div>
+            <div class="result-box">
+                <div class="val" id="res-sim">—</div>
+                <div class="lbl">Similarity</div>
+            </div>
+            <div class="result-box">
+                <div class="val" id="res-max">—</div>
+                <div class="lbl">Max Score</div>
+            </div>
+        </div>
+        <div class="feedback-box" id="res-feedback"></div>
+    </div>
+</main>
+
+<script>
+async function runEval() {
+    const btn = document.getElementById('evalBtn');
+    const student = document.getElementById('student_answer').value.trim();
+    const model   = document.getElementById('model_answer').value.trim();
+
+    if (!student || !model) { alert('Please fill in both answers.'); return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Evaluating...';
+
+    try {
+        const resp = await fetch("{% url 'assessments:evaluate' %}", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+            body: JSON.stringify({ student_answer: student, model_answer: model })
+        });
+        const data = await resp.json();
+        if (data.error) { alert('Error: ' + data.error); return; }
+
+        document.getElementById('res-score').textContent    = data.ai_score;
+        document.getElementById('res-sim').textContent      = (data.similarity_score * 100).toFixed(1) + '%';
+        document.getElementById('res-max').textContent      = data.max_score;
+        document.getElementById('res-feedback').textContent = data.ai_feedback;
+        document.getElementById('result').style.display     = 'block';
+    } catch(e) {
+        alert('Request failed: ' + e.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Evaluate';
+    }
+}
+</script>
+</body>
+</html>
